@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const secret = "asdasdasd";
+const secret = process.env.TOKEN_SECRET;
 
 app.post("/signup", async (req, res) => {
     const { username, password } = req.body;
