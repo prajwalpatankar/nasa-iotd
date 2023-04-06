@@ -12,6 +12,8 @@ import { GoogleLogin } from '@react-oauth/google';
 const SignUp = () => {
     const navigate = useNavigate();
 
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+
     // validate login
     const [token, setToken] = useState([]);
 
@@ -43,7 +45,7 @@ const SignUp = () => {
     // submit signup request
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:3001/signup", formvalue)
+        axios.post(baseUrl + "signup", formvalue)
             .then(response => {
                 console.log(response)
                 message.success("Sign Up Successful! Please Log In.")
