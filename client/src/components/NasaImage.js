@@ -32,27 +32,26 @@ const NasaImage = () => {
 
         }
 
-        // const fetchImage = async () => {
-        //     const response = await fetch(
-        //         `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API_KEY}`
-        //     );
-        //     const data = await response.json();
-        //     setImageUrl(data.url);
-        //     setTitle(data.title);
-        //     setDescription(data.explanation);
-        // };
-        // fetchImage();
-        // const interval = setInterval(() => {
-        //     fetchImage();
-        // }, 12 * 60 * 60 * 1000);
-        // return () => clearInterval(interval);
+        const fetchImage = async () => {
+            const response = await fetch(
+                `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API_KEY}`
+            );
+            const data = await response.json();
+            setImageUrl(data.url);
+            setTitle(data.title);
+            setDescription(data.explanation);
+        };
+        fetchImage();
+        const interval = setInterval(() => {
+            fetchImage();
+        }, 12 * 60 * 60 * 1000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div>
             <HeaderImage />
             <Container className="nasa-image-container d-flex align-items-center">
-
                 <Row className="justify-content-center">
                     <Col lg="6">
                         <Fade bottom delay={200}>
