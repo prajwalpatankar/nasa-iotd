@@ -58,14 +58,14 @@ const NasaImage = () => {
             <HeaderImage />
             <Container className="nasa-image-container d-flex align-items-center">
                 <Row className="justify-content-center">
-                    <Col lg="6">
+                    <Col md="6">
                         <Fade bottom delay={200}>
                             <Pulse delay={1000}>
-                                <Image src={imageUrl} fluid className='actual-image' style={{ maxHeight: "500px", background: "#fff" }} />
+                                <Image src={imageUrl} fluid style={{ maxHeight: "480px", background: "#fff" }} />
                             </Pulse>
                         </Fade>
                     </Col>
-                    <Col lg="6">
+                    <Col md="6">
                         <Fade bottom delay={600}>
                             <Pulse delay={1400}>
                                 <h2>What is this Image about ?<br /></h2>
