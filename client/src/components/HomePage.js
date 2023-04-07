@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Fade from 'react-reveal/Fade';
 import { Link } from 'react-router-dom';
+import Image from 'react-bootstrap/Image';
 
 
 const HomePage = ({ showGif, setShowGif }) => {
@@ -82,7 +83,7 @@ const HomePage = ({ showGif, setShowGif }) => {
                         <Row>
                             <Col sm="12" lg="6">
                                 <Fade bottom delay={timer}>
-                                    <img className='image-container' src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px" }} alt='earth_img' />
+                                    <Image fluid className='image-container' src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px"}} alt='earth_img' />
                                 </Fade>
                             </Col>
                             <Col sm="12" lg="6" style={{ marginTop: "50px" }}>

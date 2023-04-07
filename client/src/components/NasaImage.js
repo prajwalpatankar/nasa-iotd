@@ -62,6 +62,7 @@ const NasaImage = () => {
                         <Fade bottom delay={200}>
                             <Pulse delay={1000}>
                                 <Image src={imageUrl} fluid style={{ maxHeight: "480px", background: "#fff" }} />
+                                <br />
                             </Pulse>
                         </Fade>
                     </Col>
