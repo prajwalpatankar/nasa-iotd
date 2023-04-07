@@ -13,7 +13,7 @@ import Image from 'react-bootstrap/Image';
 const HomePage = ({ showGif, setShowGif }) => {
     const [token, setToken] = useState();
     const [fadeAway, setFadeAway] = useState(true);
-    const [timer, setTimer] = useState(showGif ? 7000 : 200)
+    const [timer, setTimer] = useState(showGif ? 7000 : 200);
 
     useEffect(() => {
         if (localStorage.getItem('googleLogIn') === '1') {
@@ -68,7 +68,7 @@ const HomePage = ({ showGif, setShowGif }) => {
     return (
         <div className='homepage-div'>
             {showGif ?
-                <img id="my-gif" src="./new_opening.gif" alt="NASA GIF" style={showGif ? imgStyle : imgStyleHidden} />
+                <img key={showGif} id="my-gif" src="./opening.gif" alt="NASA GIF" style={showGif ? imgStyle : imgStyleHidden} />
                 : <></>
             }
             <div style={{ zIndex: 1 }}>
