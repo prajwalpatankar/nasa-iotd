@@ -21,11 +21,11 @@ const HeaderImage = ({setToken}) => {
         <div className='image-header'>
             <span className='header-left'>
                 <Link to='/'><img src='.\NASA_logo.png' className='header-img' alt='header_img' /></Link>
-                <h3>NASA Image of the Day</h3>
+                <h4>NASA Image of the Day</h4>
             </span>
             <span className='header-right'>
-                <Link to="/home" className='sign-out-button'><Button variant="secondary"> Today's Image </Button></Link>
-                <Link onClick={handleLogOut} to="/" className='sign-out-button'><Button variant="secondary"> Log Out </Button></Link>
+                <Link to="/home" className='sign-out-button'><Button size='sm' variant="secondary"> Today's Image </Button></Link>
+                <Link onClick={handleLogOut} to="/" className='sign-out-button'><Button size='sm' variant="secondary"> Log Out </Button></Link>
             </span>
         </div>
     );
