@@ -54,18 +54,23 @@ const SignUp = () => {
     // submit signup request
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(baseUrl + "signup", formvalue)
-            .then(response => {
-                console.log(response)
-                message.success("Sign Up Successful! Please Log In.")
-                navigate('/login')
-            })
-            .catch((error) => {
-                // if user already exists
-                if (error.response.status === 409) {
-                    message.warning("Username already exists")
-                }
-            })
+        var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z]).{8,}$/;
+        if (re.test(formvalue.password)){
+            axios.post(baseUrl + "signup", formvalue)
+                .then(response => {
+                    console.log(response)
+                    message.success("Sign Up Successful! Please Log In.")
+                    navigate('/login')
+                })
+                .catch((error) => {
+                    // if user already exists
+                    if (error.response.status === 409) {
+                        message.warning("Username already exists")
+                    }
+                })
+        } else {
+            message.error("Password should have minimum 8 alphanumeric characters and at least 1 special symbol")
+        }
     }
 
     const handleGoogleLogin = (res) => {
