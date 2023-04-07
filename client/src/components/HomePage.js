@@ -12,27 +12,35 @@ import { Link } from 'react-router-dom';
 const HomePage = ({ showGif, setShowGif }) => {
     const [token, setToken] = useState();
     const [fadeAway, setFadeAway] = useState(true);
+    const [timer, setTimer] = useState(showGif ? 7000 : 200)
 
     useEffect(() => {
+        if (localStorage.getItem('googleLogIn') === '1') {
+            setToken('1');
+        } else {
+            setToken(localStorage.getItem('token'));
+            try {
+                let decoded = jwt_decode(localStorage.getItem('token'))
+                console.log(decoded);
 
-        setToken(localStorage.getItem('token'));
-        try {
-            let decoded = jwt_decode(localStorage.getItem('token'))
-            console.log(decoded);
-
-        } catch (err) {
-            console.log(err);
-            console.log("Invalid Auth token");
-            setToken();
+            } catch (err) {
+                console.log(err);
+                console.log("Invalid Auth token");
+                setToken();
+            }
         }
-
-        setTimeout(() => {
-            setFadeAway(false);
-        }, 6700);
-        setTimeout(() => {
-            setShowGif(false);
-        }, 7000);
-    }, [setShowGif])
+        if (showGif) {
+            setTimer(7000)
+            setTimeout(() => {
+                setFadeAway(false);
+            }, 6700);
+            setTimeout(() => {
+                setShowGif(false);
+            }, 7000);
+        } else {
+            setTimer(0);
+        }
+    })
 
 
     // styling for opening animation
@@ -64,8 +72,8 @@ const HomePage = ({ showGif, setShowGif }) => {
             }
             <div style={{ zIndex: 1 }}>
                 {token ?
-
-                    <HeaderImage handleTokenLogout={handleTokenLogout} />
+                    // <HeaderImage handleTokenLogout={handleTokenLogout} />
+                    <HeaderImage setToken={setToken} />
                     :
                     <NoLogInNav />
                 }
@@ -73,25 +81,27 @@ const HomePage = ({ showGif, setShowGif }) => {
                     <Container>
                         <Row>
                             <Col lg="6">
-                                <img src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px" }} alt='earth_img' />
+                                <Fade bottom delay={timer}>
+                                    <img src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px" }} alt='earth_img' />
+                                </Fade>
                             </Col>
                             <Col lg="6" style={{ marginTop: "50px" }}>
-                                <Fade bottom delay={7400}>
+                                <Fade bottom delay={timer + 200}>
                                     <h3>A Web app to display the image of the day by using NASA API. <br /><br /></h3>
                                     <h5><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link> to view today's image of the day!<br /><br /><br /></h5>
                                 </Fade>
-                                <p style={{ fontSize: "18px" }}>
-                                    <ul><Fade bottom delay={7600}>
+                                <div style={{ fontSize: "18px" }}>
+                                    <ul><Fade bottom delay={timer + 400}>
                                         <li>API used : https://api.nasa.gov/planetary/apod </li>
                                     </Fade>
-                                        <Fade bottom delay={7700}>
+                                        <Fade bottom delay={timer + 500}>
                                             <li>Frontend : React </li>
                                         </Fade>
-                                        <Fade bottom delay={7800}>
+                                        <Fade bottom delay={timer + 700}>
                                             <li>Backend : Node </li>
                                         </Fade>
                                     </ul>
-                                </p>
+                                </div>
                             </Col>
                         </Row>
                     </Container>

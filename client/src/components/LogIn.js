@@ -6,7 +6,8 @@ import NoLogInNav from "./NoLogInNav";
 import jwt_decode from 'jwt-decode';
 import HeadShake from 'react-reveal/HeadShake';
 import { message } from 'antd';
-import { GoogleLogin } from '@react-oauth/google';
+// import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from 'react-google-login';
 
 
 
@@ -18,6 +19,9 @@ const LogIn = () => {
     // validate login   
     const [token, setToken] = useState([]);
 
+    // Goggle client Id
+    const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
     // Handle form values
     const [formvalue, setFormValue] = useState({
         username: "",
@@ -27,13 +31,17 @@ const LogIn = () => {
     useEffect(() => {
         //validating login
         setToken(localStorage.getItem('token'));
-        try {
-            let decoded = jwt_decode(token);
-            console.log("User Details :", decoded)
+        if (localStorage.getItem('googleLogIn') === '1') {
             navigate('home')
+        } else {
+            try {
+                let decoded = jwt_decode(token);
+                console.log("User Details :", decoded)
+                navigate('home')
 
-        } catch (err) {
-            console.log("Invalid Auth token");
+            } catch (err) {
+                console.log("Invalid Auth token");
+            }
         }
     }, [navigate, token])
 
@@ -53,13 +61,20 @@ const LogIn = () => {
                 setToken({
                     token: response.data.token
                 })
-                localStorage.setItem("token", JSON.stringify(response.data.token))
+                localStorage.setItem("token", (response.data.token))
                 navigate('/home');
             })
             .catch((error) => {
                 // invalid credentials
                 message.error("Invalid username or password")
             })
+    }
+
+    const handleGoogleLogin = (res) => {
+        console.log("THISSSS", res.accessToken);
+        localStorage.setItem('googleLogIn', JSON.stringify(1))
+        localStorage.setItem('token', JSON.stringify(res.accessToken))
+        navigate('/home');
     }
 
     return (
@@ -84,12 +99,13 @@ const LogIn = () => {
                             <p className="form-bottom-links"><Link to="/signup">Don't have an account yet? Sign up!</Link></p>
                             <div style={{maxWidth: "200px", textAlign: "center"  }}>
                                 <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        console.log(credentialResponse);
-                                    }}
-                                    onError={() => {
+                                    clientId={clientID}
+                                    onSuccess={handleGoogleLogin}
+                                    onFailure={() => {
                                         console.log('Login Failed');
                                     }}
+                                    // isSignedIn={true}
+                                    cookiePolicy={'single_host_origin'}
                                 />
                             </div>
                         </div>

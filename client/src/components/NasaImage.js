@@ -21,17 +21,22 @@ const NasaImage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        try {
-            let decoded = jwt_decode(token)
-            // const decoded = jwt.verify(token, 'asdasdasd');
-            console.log(decoded);
+        console.log("ITEM", localStorage.getItem('googleLogIn'))
+        if (localStorage.getItem('googleLogIn') === '1') {
+            // var accessToken = gapi.auth.getToken().access_token;
+            // console.log(accessToken);
+        } else {
+            try {
+                let decoded = jwt_decode(token)
+                // const decoded = jwt.verify(token, 'asdasdasd');
+                console.log(decoded);
 
-        } catch (err) {
-            console.log("Invalid Auth token");
-            navigate('/')
+            } catch (err) {
+                console.log("Invalid Auth token");
+                navigate('/')
 
+            }
         }
-
         const fetchImage = async () => {
             const response = await fetch(
                 `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_API_KEY}`
@@ -63,7 +68,7 @@ const NasaImage = () => {
                     <Col lg="6">
                         <Fade bottom delay={600}>
                             <Pulse delay={1400}>
-                            <h2>What is this Image about ?<br /></h2>
+                                <h2>What is this Image about ?<br /></h2>
                             </Pulse>
                         </Fade>
                         <Fade bottom delay={1500}>

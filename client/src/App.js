@@ -6,8 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from './components/SignUp';
 import HomePage from './components/HomePage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { gapi } from 'gapi-script';
 
 function App() {
+
+  const [showGif, setShowGif] = useState(true);
+
+
   //twinkling star animation
   const createStar = () => {
     const star = document.createElement('div');
@@ -20,7 +25,16 @@ function App() {
 
   const numStars = 100;
 
+  const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientID,
+        scope: ""
+      })
+      gapi.load('client:auth2', start)
+    }
 
     for (let i = 0; i < numStars; i++) {
       document.querySelector('.star-background').appendChild(createStar());
@@ -29,23 +43,22 @@ function App() {
 
 
   
-  const [showGif, setShowGif] = useState(true);
 
   return (
     <div className="App star-background">
       <header className="App-header">
-        <GoogleOAuthProvider clientId="1063505904647-as9olt1bkpkm2g7r5e7hliecjcgna7rg.apps.googleusercontent.com">
+        {/* <GoogleOAuthProvider clientId={clientID}> */}
           <BrowserRouter>
             <Routes>
               <Route>
                 <Route exact path="/home" element={<NasaImage />} />
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/login" element={<LogIn />} />
-                <Route exact path="/" element={<HomePage showGif={showGif} setShowGif={setShowGif} />} />
+                <Route path="/" element={<HomePage showGif={showGif} setShowGif={setShowGif} />} />
               </Route>
             </Routes>
           </BrowserRouter>
-        </GoogleOAuthProvider>
+        {/* </GoogleOAuthProvider> */}
       </header>
     </div>
   );

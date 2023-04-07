@@ -4,17 +4,17 @@ import { message } from 'antd';
 import Button from 'react-bootstrap/Button';
 
 
-const HeaderImage = ({handleTokenLogout}) => {
-
+const HeaderImage = ({setToken}) => {
 
     //clear session and log out
-    function handleLogOut() {
-        handleTokenLogout();
+    const handleLogOut = () => {
         const token = localStorage.getItem('token')
+        localStorage.setItem('googleLogIn', 0)
         message.info("Successfully logged out")
         if (token) {
             localStorage.removeItem('token')
         }
+        setToken();
     }
 
     return (

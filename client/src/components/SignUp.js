@@ -26,13 +26,18 @@ const SignUp = () => {
     useEffect(() => {
         //validating login
         setToken(localStorage.getItem('token'));
-        try {
-            let decoded = jwt_decode(token);
-            console.log("User Details: ",decoded)
-            navigate('home')
+        if (localStorage.getItem('googleLogIn') === '1') {
+            console.log("INNN")
+            navigate('/home')
+        } else {
+            try {
+                let decoded = jwt_decode(token);
+                console.log("User Details: ", decoded)
+                navigate('home')
 
-        } catch (err) {
-            console.log("Invalid Auth token");
+            } catch (err) {
+                console.log("Invalid Auth token");
+            }
         }
     }, [navigate, token])
 
@@ -79,7 +84,7 @@ const SignUp = () => {
                                 <button className="btn btn-primary btn-block mt-4">Sign Up</button>
                             </form>
                             <p className="form-bottom-links"><Link to="/login">Already have an account? Log in!</Link></p>
-                            <div style={{maxWidth: "200px", textAlign: "center"  }}>
+                            <div style={{ maxWidth: "200px", textAlign: "center" }}>
                                 <GoogleLogin
                                     onSuccess={credentialResponse => {
                                         console.log(credentialResponse);
