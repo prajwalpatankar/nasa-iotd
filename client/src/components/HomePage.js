@@ -98,7 +98,7 @@ const HomePage = ({ showGif, setShowGif }) => {
                                             <li>Frontend : React </li>
                                         </Fade>
                                         <Fade bottom delay={timer + 700}>
-                                            <li>Backend : Node </li>
+                                            <li>Backend : Node.js </li>
                                         </Fade>
                                     </ul>
                                 </div>
