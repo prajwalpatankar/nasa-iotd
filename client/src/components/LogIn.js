@@ -19,7 +19,7 @@ const LogIn = () => {
     // validate login   
     const [token, setToken] = useState([]);
 
-    // Goggle client Id
+    // Google client Id
     const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
     // Handle form values

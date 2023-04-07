@@ -5,8 +5,8 @@ import NasaImage from './components/NasaImage';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from './components/SignUp';
 import HomePage from './components/HomePage';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
+// import { GoogleOAuthProvider } from 'react-google-login';
 
 function App() {
 

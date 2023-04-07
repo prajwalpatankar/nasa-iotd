@@ -6,13 +6,17 @@ import NoLogInNav from "./NoLogInNav";
 import jwt_decode from 'jwt-decode';
 import HeadShake from 'react-reveal/HeadShake';
 import { message } from 'antd';
-import { GoogleLogin } from '@react-oauth/google';
+// import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from 'react-google-login';
 
 
 const SignUp = () => {
     const navigate = useNavigate();
 
     const baseUrl = process.env.REACT_APP_BASE_URL;
+
+    // Google client Id
+    const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
     // validate login
     const [token, setToken] = useState([]);
@@ -64,6 +68,13 @@ const SignUp = () => {
             })
     }
 
+    const handleGoogleLogin = (res) => {
+        console.log("THISSSS", res.accessToken);
+        localStorage.setItem('googleLogIn', JSON.stringify(1))
+        localStorage.setItem('token', JSON.stringify(res.accessToken))
+        navigate('/home');
+    }
+
     return (
         <div>
             <NoLogInNav />
@@ -86,12 +97,13 @@ const SignUp = () => {
                             <p className="form-bottom-links"><Link to="/login">Already have an account? Log in!</Link></p>
                             <div style={{ maxWidth: "200px", textAlign: "center" }}>
                                 <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        console.log(credentialResponse);
-                                    }}
-                                    onError={() => {
+                                    clientId={clientID}
+                                    onSuccess={handleGoogleLogin}
+                                    onFailure={() => {
                                         console.log('Login Failed');
                                     }}
+                                    // isSignedIn={true}
+                                    cookiePolicy={'single_host_origin'}
                                 />
                             </div>
                         </div>
