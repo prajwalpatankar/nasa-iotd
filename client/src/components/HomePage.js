@@ -81,12 +81,12 @@ const HomePage = ({ showGif, setShowGif }) => {
                 <div style={{ marginTop: "150px" }} className="d-flex align-items-center justify-content-center">
                     <Container>
                         <Row>
-                            <Col sm="12" lg="6">
+                            <Col sm="12" lg="6" style={{ height: "40vh"}}>
                                 <Fade bottom delay={timer}>
                                     <Image fluid className='image-container' src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px"}} alt='earth_img' />
                                 </Fade>
                             </Col>
-                            <Col sm="12" lg="6" style={{ marginTop: "50px" }}>
+                            <Col sm="12" lg="6" style={{ marginTop: "50px", height:"70vh" }}>
                                 <Fade bottom delay={timer + 200}>
                                     <h3>A Web app to display the image of the day by using NASA API. <br /><br /></h3>
                                     <h5><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link> to view today's image of the day!<br /><br /><br /></h5>
