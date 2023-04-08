@@ -32,7 +32,7 @@ const LogIn = () => {
         //validating login
         setToken(localStorage.getItem('token'));
         if (localStorage.getItem('googleLogIn') === '1') {
-            navigate('home')
+            navigate('/home')
         } else {
             try {
                 let decoded = jwt_decode(token);

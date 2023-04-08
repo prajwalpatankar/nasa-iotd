@@ -47,7 +47,7 @@ const HomePage = ({ showGif, setShowGif }) => {
     // styling for opening animation
     const imgStyle = {
         position: "absolute",
-        zIndex: 2,
+        zIndex: 99,
         top: 0,
         left: 0,
         width: "100%",
