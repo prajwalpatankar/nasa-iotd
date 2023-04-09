@@ -6,8 +6,8 @@ import NoLogInNav from "./NoLogInNav";
 import jwt_decode from 'jwt-decode';
 import HeadShake from 'react-reveal/HeadShake';
 import { message } from 'antd';
-// import { GoogleLogin } from '@react-oauth/google';
 import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 
 
 
@@ -31,13 +31,26 @@ const LogIn = () => {
     useEffect(() => {
         //validating login
         setToken(localStorage.getItem('token'));
-        if (localStorage.getItem('googleLogIn') === '1') {
-            navigate('/home')
-        } else {
+        try {
+            const auth = gapi.auth2.getAuthInstance();
+            if (auth.isSignedIn.get()) {
+                console.log("Google Auth")
+                navigate('/home')
+            } else {
+                try {
+                    let decoded = jwt_decode(token);
+                    console.log("User Details :", decoded)
+                    navigate('/home')
+
+                } catch (err) {
+                    console.log("Invalid Auth token");
+                }
+            }
+        } catch (error) {
             try {
                 let decoded = jwt_decode(token);
                 console.log("User Details :", decoded)
-                navigate('home')
+                navigate('/home')
 
             } catch (err) {
                 console.log("Invalid Auth token");
@@ -71,7 +84,7 @@ const LogIn = () => {
     }
 
     const handleGoogleLogin = (res) => {
-        console.log("THISSSS", res.accessToken);
+        message.success("Successfully logged in")
         localStorage.setItem('googleLogIn', JSON.stringify(1))
         localStorage.setItem('token', JSON.stringify(res.accessToken))
         navigate('/home');
@@ -97,7 +110,7 @@ const LogIn = () => {
                                 <button className="btn btn-primary btn-block mt-4">Log In</button>
                             </form>
                             <p className="form-bottom-links"><Link to="/signup">Don't have an account yet? Sign up!</Link></p>
-                            <div style={{maxWidth: "200px", textAlign: "center"  }}>
+                            <div style={{ maxWidth: "200px", textAlign: "center" }}>
                                 <GoogleLogin
                                     clientId={clientID}
                                     onSuccess={handleGoogleLogin}

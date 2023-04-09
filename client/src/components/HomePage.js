@@ -8,18 +8,34 @@ import Col from 'react-bootstrap/Col';
 import Fade from 'react-reveal/Fade';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
+import { gapi } from 'gapi-script';
+import { useNavigate } from 'react-router-dom';
 
 
 const HomePage = ({ showGif, setShowGif }) => {
+    const navigate = useNavigate();
     const [token, setToken] = useState();
     const [fadeAway, setFadeAway] = useState(true);
     const [timer, setTimer] = useState(showGif ? 7000 : 200);
 
     useEffect(() => {
-        if (localStorage.getItem('googleLogIn') === '1') {
-            setToken('1');
-        } else {
-            setToken(localStorage.getItem('token'));
+        setToken(localStorage.getItem('token'));
+        try{
+            const auth = gapi.auth2.getAuthInstance();
+            if(auth.isSignedIn.get()) {
+                console.log("Google Auth")
+            } else {
+                try {
+                    let decoded = jwt_decode(localStorage.getItem('token'))
+                    console.log(decoded);
+    
+                } catch (err) {
+                    console.log(err);
+                    console.log("Invalid Auth token");
+                    setToken();
+                }
+            }
+        } catch(error) {
             try {
                 let decoded = jwt_decode(localStorage.getItem('token'))
                 console.log(decoded);
@@ -41,7 +57,7 @@ const HomePage = ({ showGif, setShowGif }) => {
         } else {
             setTimer(0);
         }
-    })
+    }, [showGif, setShowGif, navigate])
 
 
     // styling for opening animation
@@ -61,9 +77,9 @@ const HomePage = ({ showGif, setShowGif }) => {
     };
 
     //handle logout parent declaration
-    const handleTokenLogout = () => {
-        setToken();
-    }
+    // const handleTokenLogout = () => {
+    //     setToken();
+    // }
 
     return (
         <div className='homepage-div'>

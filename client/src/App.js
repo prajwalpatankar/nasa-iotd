@@ -28,36 +28,36 @@ function App() {
   const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   useEffect(() => {
-    function start() {
+    gapi.load('client:auth2', async () => {
       gapi.client.init({
         clientId: clientID,
-        scope: ""
+        scope: 'profile'
       })
-      gapi.load('client:auth2', start)
-    }
+    })
+
 
     for (let i = 0; i < numStars; i++) {
       document.querySelector('.star-background').appendChild(createStar());
     }
-  }, [])
+  })
 
 
-  
+
 
   return (
     <div className="App star-background">
       <header className="App-header">
         {/* <GoogleOAuthProvider clientId={clientID}> */}
-          <BrowserRouter>
-            <Routes>
-              <Route>
-                <Route exact path="/home" element={<NasaImage />} />
-                <Route exact path="/signup" element={<SignUp />} />
-                <Route exact path="/login" element={<LogIn />} />
-                <Route path="/" element={<HomePage showGif={showGif} setShowGif={setShowGif} />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route>
+              <Route exact path="/home" element={<NasaImage />} />
+              <Route exact path="/signup" element={<SignUp />} />
+              <Route exact path="/login" element={<LogIn />} />
+              <Route path="/" element={<HomePage showGif={showGif} setShowGif={setShowGif} />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
         {/* </GoogleOAuthProvider> */}
       </header>
     </div>

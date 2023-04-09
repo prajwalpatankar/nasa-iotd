@@ -1,20 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import Button from 'react-bootstrap/Button';
+import { gapi } from 'gapi-script';
 
 
-const HeaderImage = ({setToken}) => {
+const HeaderImage = () => {
+    
+    const navigate = useNavigate();
 
     //clear session and log out
     const handleLogOut = () => {
         const token = localStorage.getItem('token')
-        localStorage.setItem('googleLogIn', 0)
+        const auth = gapi.auth2.getAuthInstance();
+        auth.signOut()
         message.info("Successfully logged out")
         if (token) {
             localStorage.removeItem('token')
         }
-        setToken();
+        navigate('/home')
     }
 
     return (

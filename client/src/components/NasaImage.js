@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import Pulse from 'react-reveal/Pulse';
 import Fade from 'react-reveal/Fade';
 
+import { gapi } from 'gapi-script';
+
 
 
 const NasaImage = () => {
@@ -21,14 +23,24 @@ const NasaImage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log("ITEM", localStorage.getItem('googleLogIn'))
-        if (localStorage.getItem('googleLogIn') === '1') {
-            // var accessToken = gapi.auth.getToken().access_token;
-            // console.log(accessToken);
-        } else {
+        try{
+            const auth = gapi.auth2.getAuthInstance();
+            if(auth.isSignedIn.get()) {
+                console.log("Google Auth")
+            } else {
+                try {
+                    let decoded = jwt_decode(token)
+                    console.log(decoded);
+    
+                } catch (err) {
+                    console.log("Invalid Auth token");
+                    navigate('/')
+    
+                }
+            }
+        } catch(error) {
             try {
                 let decoded = jwt_decode(token)
-                // const decoded = jwt.verify(token, 'asdasdasd');
                 console.log(decoded);
 
             } catch (err) {
@@ -51,7 +63,7 @@ const NasaImage = () => {
             fetchImage();
         }, 12 * 60 * 60 * 1000);
         return () => clearInterval(interval);
-    }, []);
+    });
 
     return (
         <div>

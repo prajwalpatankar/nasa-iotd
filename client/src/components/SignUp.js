@@ -8,6 +8,7 @@ import HeadShake from 'react-reveal/HeadShake';
 import { message } from 'antd';
 // import { GoogleLogin } from '@react-oauth/google';
 import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 
 
 const SignUp = () => {
@@ -30,14 +31,26 @@ const SignUp = () => {
     useEffect(() => {
         //validating login
         setToken(localStorage.getItem('token'));
-        if (localStorage.getItem('googleLogIn') === '1') {
-            console.log("INNN")
-            navigate('/home')
-        } else {
+        try {
+            const auth = gapi.auth2.getAuthInstance();
+            if (auth.isSignedIn.get()) {
+                console.log("Google Auth")
+                navigate('/home')
+            } else {
+                try {
+                    let decoded = jwt_decode(token);
+                    console.log("User Details :", decoded)
+                    navigate('/home')
+
+                } catch (err) {
+                    console.log("Invalid Auth token");
+                }
+            }
+        } catch (error) {
             try {
                 let decoded = jwt_decode(token);
-                console.log("User Details: ", decoded)
-                navigate('home')
+                console.log("User Details :", decoded)
+                navigate('/home')
 
             } catch (err) {
                 console.log("Invalid Auth token");
