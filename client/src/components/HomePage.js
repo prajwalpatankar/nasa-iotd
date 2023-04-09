@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
 import { gapi } from 'gapi-script';
 import { useNavigate } from 'react-router-dom';
+import EmptyNav from './EmptyNav';
 
 
 const HomePage = ({ showGif, setShowGif }) => {
@@ -17,25 +18,26 @@ const HomePage = ({ showGif, setShowGif }) => {
     const [token, setToken] = useState();
     const [fadeAway, setFadeAway] = useState(true);
     const [timer, setTimer] = useState(showGif ? 7000 : 200);
+    const [spin, setSpin] = useState(true)
 
     useEffect(() => {
         setToken(localStorage.getItem('token'));
-        try{
+        try {
             const auth = gapi.auth2.getAuthInstance();
-            if(auth.isSignedIn.get()) {
+            if (auth.isSignedIn.get()) {
                 console.log("Google Auth")
             } else {
                 try {
                     let decoded = jwt_decode(localStorage.getItem('token'))
                     console.log(decoded);
-    
+
                 } catch (err) {
                     console.log(err);
                     console.log("Invalid Auth token");
                     setToken();
                 }
             }
-        } catch(error) {
+        } catch (error) {
             try {
                 let decoded = jwt_decode(localStorage.getItem('token'))
                 console.log(decoded);
@@ -57,6 +59,9 @@ const HomePage = ({ showGif, setShowGif }) => {
         } else {
             setTimer(0);
         }
+        setTimeout(() => {
+            setSpin(false)
+        }, 100)
     }, [showGif, setShowGif, navigate])
 
 
@@ -88,21 +93,22 @@ const HomePage = ({ showGif, setShowGif }) => {
                 : <></>
             }
             <div style={{ zIndex: 1 }}>
-                {token ?
-                    // <HeaderImage handleTokenLogout={handleTokenLogout} />
-                    <HeaderImage setToken={setToken} />
-                    :
-                    <NoLogInNav />
+                {spin ? <EmptyNav /> :
+                    token ?
+                        // <HeaderImage handleTokenLogout={handleTokenLogout} />
+                        <HeaderImage setToken={setToken} />
+                        :
+                        <NoLogInNav />
                 }
                 <div style={{ marginTop: "150px" }} className="d-flex align-items-center justify-content-center">
                     <Container>
                         <Row>
-                            <Col sm="12" lg="6" style={{ height: "40vh"}}>
+                            <Col sm="12" lg="6" style={{ height: "40vh" }}>
                                 <Fade bottom delay={timer}>
-                                    <Image fluid className='image-container' src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px"}} alt='earth_img' />
+                                    <Image fluid className='image-container' src='./homeImage1.jpg' height={"400px"} style={{ padding: "30px" }} alt='earth_img' />
                                 </Fade>
                             </Col>
-                            <Col sm="12" lg="6" style={{ marginTop: "50px", height:"70vh" }}>
+                            <Col sm="12" lg="6" style={{ marginTop: "50px", height: "70vh" }}>
                                 <Fade bottom delay={timer + 200}>
                                     <h3>A Web app to display the image of the day by using NASA API. <br /><br /></h3>
                                     <h5><Link to='/signup'>Signup</Link> / <Link to='/login'>Login</Link> to view today's image of the day!<br /><br /><br /></h5>
